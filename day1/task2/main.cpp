@@ -20,7 +20,6 @@ int main() {
         listIdx = (listIdx + 1)%2;
     }
 
-    // sum up all the differences
     for(auto list1Num : lists.at(0)) {
         // number of occurences of list1Num in the second list
         unsigned int n(0);
