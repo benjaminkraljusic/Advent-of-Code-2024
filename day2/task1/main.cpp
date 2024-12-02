@@ -21,6 +21,23 @@ std::vector<int> getLevelsFromReportStr(std::string &reportStr) {
     return levels;
 }
 
+bool reportSafeCheck(std::vector<int> &report) {
+    std::vector<int>::iterator it; 
+
+    for(it = report.begin() + 1; it < report.end() - 1; it++)            
+        // product of differences between two successive level pairs is positive if both pairs are increasing/decreasing 
+        if(!((*it - *(it - 1))*(*(it + 1) - *it) > 0 && std::abs((*it) - *(it - 1)) >= LEVEL_DIFF_MIN && std::abs((*it) - *(it - 1)) <= LEVEL_DIFF_MAX)) 
+            // report unsafe
+            return false;
+
+    // check for the last 2 levels in report if all others follow the rules
+    // increasing/decreasing was checked earlier even for the last 2
+    if(!(std::abs((*it) - *(it - 1)) >= LEVEL_DIFF_MIN && std::abs((*it) - *(it - 1)) <= LEVEL_DIFF_MAX))
+        return false;
+
+    return true;
+}
+
 int main() {
     std::ifstream input("input.txt");
     
@@ -33,27 +50,7 @@ int main() {
 
         report = getLevelsFromReportStr(reportStr);
 
-        bool skip(false);
-
-        std::vector<int>::iterator it; 
-
-        for(it = report.begin() + 1; it < report.end() - 1; it++) {            
-            // product of differences between two successive level pairs is positive if both pairs are increasing/decreasing 
-            if(!((*it - *(it - 1))*(*(it + 1) - *it) > 0 && std::abs((*it) - *(it - 1)) >= LEVEL_DIFF_MIN && std::abs((*it) - *(it - 1)) <= LEVEL_DIFF_MAX)) {
-                // report unsafe
-                skip = true;
-                break;
-            }
-        }
-
-        // check for the last 2 levels in report if all others follow the rules
-        // increasing/decreasing was checked earlier even for the last 2
-        if(!skip)
-            if(!(std::abs((*it) - *(it - 1)) >= LEVEL_DIFF_MIN && std::abs((*it) - *(it - 1)) <= LEVEL_DIFF_MAX))
-                skip = true;
-
-        // report unsafe - continue to next report
-        if(skip)
+        if(!reportSafeCheck(report))
             continue;
 
         // report safe - increase the number of safe reports
