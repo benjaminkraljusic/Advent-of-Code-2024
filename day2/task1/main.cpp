@@ -1,10 +1,10 @@
-#include<iostream>
-#include<fstream>
-#include<vector>
-#include<string>
-#include<sstream>
-#include<cstdlib>
-#include<iterator>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <cstdlib>
+#include <iterator>
 
 #define LEVEL_DIFF_MIN 1
 #define LEVEL_DIFF_MAX 3
